@@ -5,21 +5,27 @@
 !URxvt.geometry: 80x22
 ! URXVT FONTS
 !------------------------------------------------
-URxvt.font:xft:FantasqueSansMono:pixelsize=13
-URxvt.boldFont:xft:FantasqueSansMono:bold:pixelsize=13
-URxvt.italicfont:xft:FantasqueSansMono:italic:pixelsize=13
-URxvt.bolditalicFont:xft:FantasqueSansMono:bold:italic:pixelsize=13
+URxvt.font:xft:FantasqueSansMono:pixelsize=17
+URxvt.boldFont:xft:FantasqueSansMono:bold:pixelsize=17
+URxvt.italicfont:xft:FantasqueSansMono:italic:pixelsize=17
+URxvt.bolditalicFont:xft:FantasqueSansMono:bold:italic:pixelsize=17
 
 !URxvt*letterSpace: 0
 URxvt*allow_bold: true
 ! URXVT FONT SETTINGS
 !------------------------------------------------
-Xft.autohint: true
-Xft.antialias: true
-Xft.hinting: true
+#Xft.autohint: true
+#Xft.antialias: true
+#Xft.hinting: true
+#Xft.hintstyle: hintslight
+#Xft.rgba: rgb
+#Xft.lcdfilter: lcddefault
+Xft.autohint: 0
+Xft.antialias: 1
+Xft.hinting: 1
 Xft.hintstyle: hintslight
-Xft.rgba: rgb
-Xft.lcdfilter: lcddefault
+Xft.rgba: none
+Xft.dpi: 118
 ! URXVT ENABLE LINK SUPPORT
 !------------------------------------------------
 !URxvt.perl-lib: /home/luca/Documenti/perl/
