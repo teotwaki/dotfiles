@@ -55,7 +55,9 @@ plugins=(git cp ssh-agent sudo)
 # User configuration
 
 export PATH="$HOME/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:$HOME/.local/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
+export PATH="$PATH:$JAVA_HOME/bin"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -85,6 +87,8 @@ export EDITOR='nvim' GIT_EDITOR='nvim'
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export CCACHE_DIR=$HOME/.ccache
 
+export PATH="$PATH:$HOME/bin/sbt/bin" # Scala Build Tool
+
 export NVM_DIR="/home/slau/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
@@ -98,3 +102,5 @@ alias gf='git fetch origin -tp'
 export TERM=xterm-256color
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
+source "$HOME/.kube/completion"
+source "$HOME/.kops.env"
