@@ -5,7 +5,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="mh"
+ZSH_THEME="eastwood"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -32,6 +32,9 @@ ZSH_THEME="mh"
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
+# Disable NOMATCH errors
+setopt NO_NOMATCH
+
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
 # much, much faster.
@@ -50,14 +53,16 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git cp rake rvm ruby ssh-agent sudo virtualenvwrapper)
-plugins=(git cp ssh-agent sudo)
+plugins=(git cp rvm ssh-agent sudo)
 
 # User configuration
 
 export PATH="$HOME/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/games:/usr/local/sbin:/usr/local/bin:$HOME/.local/bin"
+
+# Add cargo
 export PATH="$HOME/.cargo/bin:$PATH"
+
 # export MANPATH="/usr/local/man:$MANPATH"
-export PATH="$PATH:$JAVA_HOME/bin"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -88,6 +93,7 @@ export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 export CCACHE_DIR=$HOME/.ccache
 
 export PATH="$PATH:$HOME/bin/sbt/bin" # Scala Build Tool
+export PATH="$PATH:$JAVA_HOME/bin"
 
 export NVM_DIR="/home/slau/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -99,8 +105,36 @@ alias grip='grep -rI'
 alias gco='git checkout'
 alias gf='git fetch origin -tp'
 
+alias kcon='kubectl config current-context'
+alias kconu='kubectl config use-context'
+alias kexec='kubectl exec -ti'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias klogs='kubectl logs'
+
+khosts() {
+  kubectl get nodes -o json | jq -r '.items[].status.addresses[] | select(.type == "ExternalIP") | .address'
+}
+
+knodessh() {
+  for host in $(khosts); do
+    echo $host
+    ssh admin@$host -i ~/.ssh/k8s_euwest_rsa $*
+    echo
+  done
+}
+
 export TERM=xterm-256color
 
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.kube/completion"
 source "$HOME/.kops.env"
+source "$HOME/.local/bin/aws_zsh_completer.sh"
+source "$HOME/.kops_completion"
+source "$HOME/.helm_completion"
+
+PATH="/home/slau/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/slau/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/slau/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/slau/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/slau/perl5"; export PERL_MM_OPT;
