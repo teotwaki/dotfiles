@@ -19,6 +19,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'numkil/ag.nvim'
 Plug 'terryma/vim-expand-region'
 Plug 'Raimondi/delimitMate'
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -46,7 +47,6 @@ set shiftwidth=2        " Indentation amount for < and > commands.
 
 set noerrorbells        " No beeps.
 set modeline            " Enable modeline.
-set esckeys             " Cursor keys in insert mode.
 set linespace=0         " Set line-spacing to minimum.
 set nojoinspaces        " Prevents inserting two spaces after punctuation on a join (J)
 
