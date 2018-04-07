@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+# This requires some shenanigans depending on which OS you're using. On Ubuntu,
+# you most likely need to sudo this file when executing it. On other platforms
+# (like Void), you might get away by having a proper configuration.
+#
+# These are needed:
+#
+# $ cat /usr/local/sbin/unpriv-ip
+# #!/bin/sh
+# sudo /sbin/ip $*
+#
+# This in your sudoers file
+# johndoe ALL=(ALL) NOPASSWD: /sbin/ip
+# johndoe ALL=(ALL) NOPASSWD: /sbin/openvpn --mktun --dev tun0 --dev-type tun --user johndoe --group users
+
+CONFIG_DIR="$HOME/.vpn"
+CONFIG_FILE="remote-access-openvpn.ovpn"
+IFACE="tun0"
+IFACE_USER="$(whoami)"
+IFACE_GROUP="users"
+
+interface_missing() {
+  ip -o link show | awk -F': ' '{print $2}' | grep -q "$IFACE" && false || true
+}
+
+create_iface() {
+  if interface_missing; then
+    echo "Creating $IFACE (for $IFACE_USER:$IFACE_GROUP)"
+    sudo openvpn --mktun --dev "$IFACE" --dev-type tun --user "$IFACE_USER" --group "$IFACE_GROUP" >/dev/null
+  fi
+}
+
+is_running() {
+  local process_name="$1"
+  pgrep "$process_name" >/dev/null
+}
+
+start_vpn() {
+  if is_running "openvpn"; then
+    echo "VPN already up."
+    exit 1
+  fi
+
+  create_iface
+  echo "VPN starting..."
+  cd "$CONFIG_DIR"
+  openvpn --daemon --config "$CONFIG_FILE"
+}
+
+stop_vpn() {
+  if ! is_running "openvpn"; then
+    echo "VPN not up."
+    exit 2
+  fi
+
+  echo "VPN shutting down..."
+  pkill openvpn
+}
+
+usage() {
+  echo "vpn: start or stop the VPN"
+  echo
+  echo "Usage:"
+  echo "  vpn up"
+  echo "  vpn down"
+
+  exit -1
+}
+
+main() {
+  local command="$1"
+
+  if [[ $command == up ]]; then
+    start_vpn
+  elif [[ $command == down ]]; then
+    stop_vpn
+  else
+    usage
+  fi
+}
+
+main $*
