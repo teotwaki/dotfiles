@@ -28,7 +28,12 @@ complete -C '/usr/local/bin/aws_completer' aws
 
 # Exports
 
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+if [[ $(uname) == "Darwin" ]]; then
+  export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
+else
+  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+fi
+
 export WORKON_HOME="$HOME/.virtualenvs"
 export PROJECT_HOME="$HOME/src"
 
@@ -53,6 +58,10 @@ if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
 
+if [[ $(uname) == "Darwin" ]]; then
+  source virtualenvwrapper.sh
+fi
+
 # Aliases
 
 alias v="nvim"
@@ -69,7 +78,7 @@ fi
 # Paths
 
 export GOPATH="$HOME/go"
-export PATH="$PATH:$HOME/.local/bin:$HOME/.yarn/bin:$GOPATH/bin"
+export PATH="$PATH:$HOME/.yarn/bin:$GOPATH/bin"
 
 export GIT_EDITOR=nvim
 
