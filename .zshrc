@@ -78,7 +78,7 @@ fi
 # Paths
 
 export GOPATH="$HOME/go"
-export PATH="$PATH:$HOME/.yarn/bin:$GOPATH/bin"
+export PATH="$PATH:$HOME/.yarn/bin:$GOPATH/bin:$HOME/.local/bin"
 
 export GIT_EDITOR=nvim
 
