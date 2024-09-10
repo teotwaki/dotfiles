@@ -30,6 +30,8 @@ complete -C '/usr/local/bin/aws_completer' aws
 
 if [[ $(uname) == "Darwin" ]]; then
   export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
+elif [[ -d "$HOME/.local/share/pipx/venvs/virtualenvwrapper" ]]; then
+  export VIRTUALENVWRAPPER_PYTHON="$HOME/.local/share/pipx/venvs/virtualenvwrapper/bin/python3"
 else
   export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 fi
